@@ -1,3 +1,4 @@
+-- посчитать пакеты, над которыми работало больше одного разработчика
 SELECT count(D.id),
        package_nm
 FROM "Package"
@@ -8,7 +9,7 @@ GROUP BY package_nm
 HAVING count(D.id) > 1;
 
 
---
+-- вывести топ 1 меэнтейнера по каличеству поддеживаемых пакетов
 SELECT count(P.id),
        maintainer_nm
 FROM "Maintainer"
@@ -18,6 +19,7 @@ ORDER BY count(P.id) DESC
 LIMIT 1;
 
 
+-- выбрать пакеты, которыe разрабатываются не в git
 SELECT package_nm
 FROM "Package"
 JOIN "Source Code" "S C" ON "Package".id = "S C".package_id
@@ -28,6 +30,7 @@ JOIN "Source Code" "S C2" ON "Package".id = "S C2".package_id
 WHERE vcs_nm = 'git';
 
 
+-- вывести по каждой стране мэйнтейнеров, которые поддерживают более одного пакета
 SELECT *
 FROM
   (SELECT maintainer_nm,
@@ -41,6 +44,7 @@ FROM
 WHERE top > 1;
 
 
+-- вывести максимальный размер пакета в группе
 SELECT group_nm,
        max(package_sz)
 FROM "Package Group"
