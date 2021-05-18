@@ -40,4 +40,4 @@ BEGIN
 END
 $$ LANGUAGE plpgsql;
 
-SELECT mask_email('MishaPidor@mail.ru', 1, 2);
+SELECT mask_email('Misha@mail.ru', 1, 2);
