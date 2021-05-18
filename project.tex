@@ -22,7 +22,6 @@
 
 \begin{center}
     \hfill \break
-    \large{МИНОБРНАУКИ РОССИИ}\\
     \small{\textbf{МОСКОВСКИЙ ФИЗИКО-ТЕХНИЧЕСКИЙ ИНСТИТУТ \\(ГОСУДАРСТВЕННЫЙ УНИВЕРСИТЕТ)}}\\
     \hfill \break
     \normalsize{Физтех-школа прикладной математики и информатики (ФПМИ)}\\
@@ -31,7 +30,7 @@
     \hfill \break
     \hfill \break
     \hfill \break
-    \large{ПРОЕКТИРОВАНИЕ БАЗЫНЫХ ПАКЕТНОГО МЕНЕДЖЕРА}\\
+    \large{ПРОЕКТИРОВАНИЕ БАЗЫ ДАННЫХ ПАКЕТНОГО МЕНЕДЖЕРА}\\
     \hfill \break
     \hfill \break
     \hfill \break
@@ -62,7 +61,7 @@
         Package - пакет, программа в виде исполняемого файла
 
     \item
-        Package Group
+        Package Group - группа пакетов
 
     \item
         Maintainer - человек, компилирующий исходный код в исполняемые файлы
@@ -71,7 +70,7 @@
         PGP key - ключ для проверки подлинности пакета
 
     \item
-        Developer
+        Developer - разработчик
 
     \item
         Source Code - исходный код программы
@@ -94,7 +93,7 @@
 Проектируемая база находится в 3НФ.
 
 \begin{figure}[h]
-    \center{\includegraphics[scale=0.5]{logical-model.png}}
+    \center{\includegraphics[scale=0.44]{logical-model.png}}
     \caption{Логическая модель (ER-диаграмма)}
     \label{fig:image}
 \end{figure}
@@ -130,13 +129,13 @@ location\_nm & Страна проживания & VARCHAR(64) & NOT NULL &  &  
 \multicolumn{6}{|c|}{\textbf{Package}} \\ \hline
 \multicolumn{1}{|c|}{\textbf{Название}} & \multicolumn{1}{c|}{\textbf{Описание}} & \textbf{Тип данных} & \textbf{Ограничение} & \textbf{PK} & \textbf{FK} \\ \hline
 id & Уникальный ключ & SERIAL & NOT NULL & + &  \\ \hline
-maintainer\_id & id соотв. мэйнтенера & INT & NOT NULL &  & + \\ \hline
+maintainer\_id & Внешний ключ сущности мэйнтенер & INT & NOT NULL &  & + \\ \hline
 package\_nm & Название пакета & VARCHAR(128) & NOT NULL &  &  \\ \hline
 repository\_nm & Название репозитория, содержащего пакет & VARCHAR(16) & NOT NULL &  &  \\ \hline
 architechture\_nm & Под какую архитектуру & VARCHAR(16) & NOT NULL &  &  \\ \hline
 last\_updated\_dt & Дата последнего обновления & DATE & NOT NULL &  &  \\ \hline
 package\_sz & Размер пакета в МБ & REAL & NOT NULL &  &  \\ \hline
-license\_nm & Лицензия, под которой распространяется & VARCHAR(16) & NOT NULL &  &  \\ \hline
+license\_nm & Лицензия распространения & VARCHAR(16) & NOT NULL &  &  \\ \hline
 \end{tabular}%
 }
 \caption{Сущность Package}
@@ -152,7 +151,7 @@ license\_nm & Лицензия, под которой распространяе
 \multicolumn{6}{|c|}{\textbf{PGP key}} \\ \hline
 \multicolumn{1}{|c|}{\textbf{Название}} & \multicolumn{1}{c|}{\textbf{Описание}} & \textbf{Тип данных} & \textbf{Ограничение} & \textbf{PK} & \textbf{FK} \\ \hline
 id & Уникальный ключ & SERIAL & NOT NULL & + &  \\ \hline
-maintainer\_id & id соотв. мэйнтейнера & INT & NOT NULL &  & + \\ \hline
+maintainer\_id & Внешний ключ сущности мэйнтейнер & INT & NOT NULL &  & + \\ \hline
 fingerprint\_txt & Хеш публичного ключа & VARCHAR(64) & NOT NULL, UNIQUE &  &  \\ \hline
 \end{tabular}%
 }
@@ -169,7 +168,7 @@ fingerprint\_txt & Хеш публичного ключа & VARCHAR(64) & NOT NU
 \multicolumn{6}{|c|}{\textbf{Source Code}} \\ \hline
 \multicolumn{1}{|c|}{\textbf{Название}} & \multicolumn{1}{c|}{\textbf{Описание}} & \textbf{Тип данных} & \textbf{Ограничение} & \textbf{PK} & \textbf{FK} \\ \hline
 id & Уникальный ключ & SERIAL & NOT NULL & + &  \\ \hline
-package\_id & id соотв. пакета & INT & NOT NULL &  & + \\ \hline
+package\_id & Внешний ключ сущности пакет & INT & NOT NULL &  & + \\ \hline
 commits\_cnt & Количество выполненых коммитов & INT & NOT NULL, DEFAULT 0, \textgreater{}= 0 &  &  \\ \hline
 vcs\_nm & Название системы контроля верский & VARCHAR(16) & NOT NULL &  &  \\ \hline
 \end{tabular}%
@@ -187,7 +186,7 @@ vcs\_nm & Название системы контроля верский & VARC
 \multicolumn{6}{|c|}{\textbf{Developer}} \\ \hline
 \multicolumn{1}{|c|}{\textbf{Название}} & \multicolumn{1}{c|}{\textbf{Описание}} & \textbf{Тип данных} & \textbf{Ограничение} & \textbf{PK} & \textbf{FK} \\ \hline
 id & Уникальный ключ & SERIAL & NOT NULL & + &  \\ \hline
-developer\_nm & Имя разработчика & VARCHAR(128) & NOT NULL &  & + \\ \hline
+developer\_nm & Имя разработчика & VARCHAR(128) & NOT NULL &  & \\ \hline
 email\_addr\_txt & Адрес электронной почты & TEXT &  &  &  \\ \hline
 \end{tabular}%
 }
@@ -205,7 +204,7 @@ email\_addr\_txt & Адрес электронной почты & TEXT &  &  &  
 \multicolumn{1}{|c|}{\textbf{Название}} & \multicolumn{1}{c|}{\textbf{Описание}} & \textbf{Тип данных} & \textbf{Ограничение} & \textbf{PK} & \textbf{FK} \\ \hline
 id & Уникальный ключ & SERIAL & NOT NULL & + &  \\ \hline
 developer\_id & Внешний ключ сущности разрабочика & INT &  &  & + \\ \hline
-source\_id & Внешний ключ сущности исходный код & INT &  &  & + \\ \hline
+source\_id & Внешний ключ сущности исходного кода & INT &  &  & + \\ \hline
 \end{tabular}%
 }
 \caption{Сущность Source Code X Developer}
@@ -222,7 +221,7 @@ source\_id & Внешний ключ сущности исходный код & 
 \multicolumn{1}{|c|}{\textbf{Название}} & \multicolumn{1}{c|}{\textbf{Описание}} & \textbf{Тип данных} & \textbf{Ограничение} & \textbf{PK} & \textbf{FK} \\ \hline
 id & Уникальный ключ & SERIAL & NOT NULL & + &  \\ \hline
 group\_nm & Название группы & VARCHAR(16) & NOT NULL &  &  \\ \hline
-is\_default\_flag & Поставляется ли пакет при базовой установкe & BOOLEAN & NOT NULL, DEFAULT FALSE  &  &  \\ \hline
+is\_default\_flag & Входит ли в базовую установку & BOOLEAN & NOT NULL, DEFAULT FALSE  &  &  \\ \hline
 \end{tabular}%
 }
 \caption{Сущность Package group}
@@ -238,8 +237,8 @@ is\_default\_flag & Поставляется ли пакет при базово
 \multicolumn{6}{|c|}{\textbf{Package X Package Group}} \\ \hline
 \multicolumn{1}{|c|}{\textbf{Название}} & \multicolumn{1}{c|}{\textbf{Описание}} & \textbf{Тип данных} & \textbf{Ограничение} & \textbf{PK} & \textbf{FK} \\ \hline
 id & Уникальный ключ & SERIAL & NOT NULL & + &  \\ \hline
-package\_id & Внешний ключ пакета & INT &  & & + \\ \hline
-group\_id & Внешний ключ группы пакетов & INT &  & & + \\ \hline
+package\_id & Внешний ключ пакета & INT & NOT NULL & &  \\ \hline
+group\_id & Внешний ключ группы пакетов & INT & NOT NULL & &  \\ \hline
 \end{tabular}%
 }
 \caption{Сущность Package X Package Group}
